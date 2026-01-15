@@ -1,1 +1,6 @@
 fastapi[all]
+uvicorn
+Jinja2
+python-multipart
+passlib[bcrypt]
+asgiref
