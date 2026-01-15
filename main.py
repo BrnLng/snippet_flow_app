@@ -13,7 +13,7 @@ from contextlib import asynccontextmanager
 templates = Jinja2Templates(directory="templates")
 
 # 2. Configuração de Hashing de Senha
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 # 3. Configuração do Banco de Dados SQLite
 # Usaremos um arquivo SQLite simples. Para produção, considere PostGreSQL ou MySQL.
