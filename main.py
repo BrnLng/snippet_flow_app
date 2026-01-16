@@ -60,7 +60,7 @@ async def lifespan(app: FastAPI):
     print("Desligando o aplicativo...") # Para depuração
 
 app = FastAPI(lifespan=lifespan) # NOVO: Passe o lifespan para a instância do FastAPI
-
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Funções de autenticação
 def verify_password(plain_password, hashed_password):
