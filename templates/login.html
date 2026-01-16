@@ -6,7 +6,7 @@
     {% if message %}
         <p class="error-message">{{ message }}</p>
     {% endif %}
-    <form method="POST" hx-post="/login" hx-redirect="/login"> {# hx-target="body" hx-swap="outerHTML"> #}
+    <form method="POST" hx-post="/login" hx-redirect="/dashboard"> {# hx-target="body" hx-swap="outerHTML"> #}
         <div class="form-group">
             <label for="username">Usuário</label>
             <input type="text" id="username" name="username" required>
