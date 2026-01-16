@@ -1,28 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - SnippetFlow</title>
-    <!--<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQgClZAarKjW0B3t7fmoeUFppNG/2A8adByHA5aiIGT0lkVCNA7Y5lelHD" crossorigin="anonymous"></script>-->
-    <script src="/app/htmx-1-9-10.min.js" integrity="sha256-s73PXHQYl6U2SLEgf/8EaaDWGQFCm6H26I+Y69hOZp4="></script>
-    <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; background-color: #e9ecef; margin: 0; }
-        .dashboard-container { background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 400px; text-align: center; }
-        h1 { color: #333; margin-bottom: 20px; }
-        p { color: #555; }
-        button { padding: 10px 20px; background-color: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 20px; }
-        button:hover { background-color: #c82333; }
-    </style>
-</head>
-<body>
-    <div class="dashboard-container">
-        <h1>Bem-vindo ao Dashboard, {{ username }}!</h1>
-        <p>Você acessou uma página protegida. Parabéns!</p>
-        <p>Este é o lugar onde seus snippets estariam.</p>
-        <form hx-post="/logout" hx-target="body" hx-swap="outerHTML">
-            <button type="submit">Sair</button>
-        </form>
-    </div>
-</body>
-</html>
+{% extends "base-main.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <h1>Bem-vindo ao Dashboard, {{ username|capitalize }}!</h1>
+    <p>Você acessou uma página protegida. Parabéns!</p>
+    <p>Este é o lugar onde os snippets estarão.</p>
+    <form hx-post="/logout" hx-target="body" hx-swap="outerHTML">
+        <button type="submit">Sair</button>
+    </form>
+</div>
+{% endblock %}
