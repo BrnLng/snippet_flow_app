@@ -18,7 +18,7 @@ pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 # 3. Configuração do Banco de Dados SQLite
 # Usaremos um arquivo SQLite simples. Para produção, considere PostGreSQL ou MySQL.
-DATABASE_FILE = "/BrnLng/snippet_flow_app/app_data.db"
+DATABASE_FILE = "/home/BrnLng/snippet_flow_app/app_data.db"
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE_FILE)
