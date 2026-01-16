@@ -6,26 +6,21 @@ from passlib.context import CryptContext
 from typing import Optional
 import sqlite3
 from contextlib import asynccontextmanager
-from app.models import Snippet
+from app.models import Snippet, Collaborator, Task
 
-#app = FastAPI()
+DATABASE_FILE = "/opt/render/project/src/app_data.db"
+#DATABASE_FILE = "/home/BrnLng/snippet_flow_app/app_data.db" <   File "/opt/render/project/src/main.py", line 24, in get_db_connection
 
-# 1. Configuração de Templates (Jinja2)
 templates = Jinja2Templates(directory="templates")
-
-# 2. Configuração de Hashing de Senha
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
-# 3. Configuração do Banco de Dados SQLite
-# Usaremos um arquivo SQLite simples. Para produção, considere PostGreSQL ou MySQL.
-DATABASE_FILE = "/home/BrnLng/snippet_flow_app/app_data.db"
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE_FILE)
-    conn.row_factory = sqlite3.Row # Para acessar colunas por nome
+    conn.row_factory = sqlite3.Row  # Para acessar colunas por nome
     return conn
 
-# Função para inicializar o banco de dados (criar tabela de usuários)
+
 def init_db():
     conn = get_db_connection()
     cursor = conn.cursor()
