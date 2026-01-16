@@ -6,6 +6,7 @@ from passlib.context import CryptContext
 from typing import Optional
 import sqlite3
 from contextlib import asynccontextmanager
+from app.models import Snippet
 
 #app = FastAPI()
 
