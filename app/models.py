@@ -29,7 +29,7 @@ class User(SQLModel, table=True):  # 2
     collaborations: List["Snippet"] = Relationship(back_populates="collaborators", 
         link_model="SnippetCollaboratorLink")
     custom_date_stamp: str = r'%d/%m/%Y'  # // '%Y-%m-%d' etc
-    custom_body_preview: float = 4.0
+    # custom_body_preview: float = 4.0
 
 
 class Tag(SQLModel, table=True):  # 4
