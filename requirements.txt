@@ -1,7 +1,7 @@
 asgiref
 fastapi[all]
 Jinja2
-passlib[cryptography]
+passlib[pwdlib]
 python-multipart
 sqlmodel
 uvicorn

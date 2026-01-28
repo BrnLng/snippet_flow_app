@@ -11,6 +11,9 @@ from app.models import User, Snippet, SnippetCollaboratorLink, SnippetHistory
 from app.services import SnippetSerializer
 
 
+VERSION = "0.1"
+
+
 DATABASE_FILE = "sqlite:///app_data.db"
 engine = create_engine(DATABASE_FILE, echo=True)  # echo=True ajuda a ver o SQL gerado no terminal (bom para debug)
 
@@ -88,7 +91,7 @@ async def process_logout(request: Request):
 
 @app.get("/dashboard", response_class=HTMLResponse)  # GET
 async def dashboard_page(request: Request, current_user: Optional[User] = Depends(get_current_user)):
-    if not current_user:
+    if (not current_user) or (request["detail"] == "Não autenticado"):
         return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
 
     with Session(engine) as session:
@@ -166,7 +169,7 @@ async def save_snippet(
 
 @app.get("/ping")
 async def ping():
-    return {"status": "pong", "db": "connected"}
+    return {"status": "pong", "version": VERSION, "db": "connected"}
 
 
 @app.get("/seed/{pass_code}")
