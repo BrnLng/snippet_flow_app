@@ -1,6 +1,7 @@
-fastapi[all]
-uvicorn
-Jinja2
-python-multipart
-passlib[cryptography]
 asgiref
+fastapi[all]
+Jinja2
+passlib[cryptography]
+python-multipart
+sqlmodel
+uvicorn

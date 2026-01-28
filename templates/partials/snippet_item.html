@@ -1,0 +1,77 @@
+<article class="snippet-item card" id="snippet-{{ snippet.id }}">
+    
+    <div class="snippet-header" 
+         _="on click toggle .expanded on #snippet-{{ snippet.id }} then toggle .hidden on #body-{{ snippet.id }}">
+        
+        <div class="title-row">
+            <span class="toggle-icon">▶</span>
+            <h3 class="snippet-title">
+                {{ snippet.title }}
+                
+                {% if snippet.created_by_id != user_id %}
+                    <span class="badge badge-collab" title="Criado por {{ snippet.created_by.username }}">
+                        Shared
+                    </span>
+                {% endif %}
+            </h3>
+        </div>
+
+        <div class="meta-row">
+            <span class="timestamp">Atualizado em {{ snippet.updated_at.strftime('%d/%m %H:%M') }}</span>
+            
+            {% if snippet.tags %}
+                <div class="tags-list">
+                {% for tag in snippet.tags %}
+                    <span class="tag pill" title="{{ tag.value }}">
+                        {{ tag.name }}
+                    </span>
+                {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="body-{{ snippet.id }}" class="snippet-body hidden">
+        
+        <div class="text-content">
+            {{ snippet.body }}
+        </div>
+
+        {% if snippet.tasks %}
+            <div class="tasks-section">
+                <h4>Tarefas</h4>
+                <ul class="task-list">
+                {% for task in snippet.tasks %}
+                    {% if not task.parent_id %}
+                    <li class="task-item {% if task.is_done %}done{% endif %}">
+                        <input type="checkbox" 
+                               {% if task.is_done %}checked{% endif %}
+                               hx-post="/tasks/{{ task.id }}/toggle"
+                               hx-swap="none"> <span class="task-text">{{ task.text }}</span>
+                        
+                        {% if task.assignee %}
+                            <span class="assignee-avatar" title="Responsável: {{ task.assignee.username }}">
+                                {{ task.assignee.username[:1]|upper }}
+                            </span>
+                        {% endif %}
+                    </li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <div class="snippet-actions">
+            <button class="btn-ghost" 
+                    hx-get="/snippets/{{ snippet.id }}/edit-form" 
+                    hx-target="#snippet-{{ snippet.id }}" 
+                    hx-swap="outerHTML">
+                Editar
+            </button>
+            
+            <button class="btn-ghost text-xs" title="Ver histórico Markdown">
+                Ver Raw (MD)
+            </button>
+        </div>
+    </div>
+</article>

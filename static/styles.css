@@ -14,3 +14,36 @@ button.cautious { padding: 10px 20px; background-color: #dc3545; color: white; b
 button:hover { background-color: #0056b3; }
 button.cautious:hover { background-color: #c82333; }
 .error-message { color: red; margin-top: 10px; }
+
+.hidden { display: none; }
+.badge-collab { background: #e0f2f1; color: #00695c; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; }
+.pill { background: #eee; padding: 2px 8px; border-radius: 10px; font-size: 0.75em; margin-right: 4px; }
+.task-item.done { text-decoration: line-through; opacity: 0.6; }
+
+.flow-container {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Courier New', Courier, monospace; /* Vibe editor de texto */
+}
+
+.snippet-item {
+    border-bottom: 1px dashed #ccc; /* Separador estilo caderno */
+    padding: 1rem 0;
+    transition: background-color 0.2s;
+}
+
+.snippet-item:hover {
+    background-color: #f9f9f9;
+}
+
+.snippet-item.expanded .toggle-icon {
+    transform: rotate(90deg);
+}
+.snippet-item.expanded {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-bottom: 1px solid #eee;
+    margin: 1rem -1rem; /* Expande um pouco para os lados */
+    padding: 1rem;
+    border-radius: 4px;
+}
