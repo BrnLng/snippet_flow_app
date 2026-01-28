@@ -169,6 +169,16 @@ async def ping():
     return {"status": "pong", "db": "connected"}
 
 
+@app.get("/seed/{pass_code}")
+async def seed():
+    from seed import seed_database
+    if pass_code == 'l33tr':
+        seed_database()
+        return {"status": "success on seeding db"}
+    else:
+        return {"status": "error on seeding db"}
+
+
 """ versão antiga
 
 from fastapi import FastAPI, Request, Response, Form, Depends, HTTPException, status
