@@ -1,3 +1,4 @@
+from __future__ import annotations  # used to defer the evaluation of type annotations until runtime, allowing you to use type hints for classes or functions that are defined later in the code or in a module that would otherwise cause an error
 from typing import List, Optional
 from datetime import datetime
 from sqlmodel import Field, Relationship, SQLModel, Text
@@ -11,16 +12,16 @@ class Snippet(SQLModel, table=True):
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
     created_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    created_by: Optional["User"] = Relationship(
+    created_by: Optional[User] = Relationship(
         sa_relationship_kwargs={"primaryjoin": "Snippet.created_by_id==User.id", "lazy": "joined"} )
     updated_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    updated_by: Optional["User"] = Relationship(
+    updated_by: Optional[User] = Relationship(
         sa_relationship_kwargs={"primaryjoin": "Snippet.updated_by_id==User.id"} )
-    tasks: List["Task"] = Relationship(back_populates="snippet", 
+    tasks: List[Task] = Relationship(back_populates="snippet", 
         sa_relationship_kwargs={"cascade": "all, delete-orphan"} )
-    tags: List["Tag"] = Relationship(back_populates="snippets", link_model="SnippetTagLink")
-    collaborators: List["User"] = Relationship(back_populates="collaborations", link_model="SnippetCollaboratorLink")
-    history: List["SnippetHistory"] = Relationship(back_populates="snippet")
+    tags: List[Tag] = Relationship(back_populates="snippets", link_model="SnippetTagLink")
+    collaborators: List[User] = Relationship(back_populates="collaborations", link_model="SnippetCollaboratorLink")
+    history: List[SnippetHistory] = Relationship(back_populates="snippet")
 
 
 class User(SQLModel, table=True):
@@ -31,7 +32,7 @@ class User(SQLModel, table=True):
     avatar_url: Optional[str] = None
     snippets_created: List[Snippet] = Relationship(
         sa_relationship_kwargs={"primaryjoin": "Snippet.created_by_id==User.id"} )
-    assigned_tasks: List["Task"] = Relationship(back_populates="assignee")
+    assigned_tasks: List[Task] = Relationship(back_populates="assignee")
     collaborations: List[Snippet] = Relationship(back_populates="collaborators", 
         link_model="SnippetCollaboratorLink")
     custom_date_stamp: str = r'%d/%m/%Y'  # '%Y-%m-%d'
@@ -51,8 +52,8 @@ class Task(SQLModel, table=True):
     text: str
     is_done: bool = False
     parent_id: Optional[int] = Field(default=None, foreign_key="task.id")  # for sub-tasks
-    sub_tasks: List["Task"] = Relationship(back_populates="parent_task")
-    parent_task: Optional["Task"] = Relationship(back_populates="sub_tasks", 
+    sub_tasks: List[Task] = Relationship(back_populates="parent_task")
+    parent_task: Optional[Task] = Relationship(back_populates="sub_tasks", 
         sa_relationship_kwargs={"remote_side": "Task.id"} )
     snippet_id: Optional[int] = Field(default=None, foreign_key="snippet.id")
     snippet: Optional[Snippet] = Relationship(back_populates="tasks")
