@@ -11,7 +11,7 @@ from app.models import User, Snippet, SnippetCollaboratorLink, SnippetHistory
 from app.services import SnippetSerializer
 
 
-VERSION = "0.125"
+VERSION = "0.13"
 
 
 DATABASE_FILE = "sqlite:///app_data.db"

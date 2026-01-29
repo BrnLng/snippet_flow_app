@@ -20,17 +20,17 @@ class User(SQLModel, table=True):  # 2
     username: str = Field(index=True, unique=True)
     email: Optional[str] = None
     hashed_password: str
-    avatar_url: Optional[str] = None
+    # TODO: avatar_url: Optional[str] = None
 
-    snippets_created: List["Snippet"] = Relationship(back_populates="created_by")
-    # snippets_created: List["Snippet"] = Relationship(
-    #     sa_relationship_kwargs={"primaryjoin": "Snippet.created_by_id==User.id"} )
+    # snippets_created: List["Snippet"] = Relationship(back_populates="created_by")
+    ## snippets_created: List["Snippet"] = Relationship(
+    ##     sa_relationship_kwargs={"primaryjoin": "Snippet.created_by_id==User.id"} )
 
-    assigned_tasks: List["Task"] = Relationship(back_populates="assignee")
-    collaborations: List["Snippet"] = Relationship(back_populates="collaborators", 
+    # assigned_tasks: List["Task"] = Relationship(back_populates="assignee")
+    # collaborations: List["Snippet"] = Relationship(back_populates="collaborators", 
         link_model=SnippetCollaboratorLink)
-    # TODO: maybe add:: custom_date_stamp: str = r'%d/%m/%Y'  # // '%Y-%m-%d' etc
-    # custom_body_preview: float = 4.0
+    ## TODO: maybe add:: custom_date_stamp: str = r'%d/%m/%Y'  # // '%Y-%m-%d' etc
+    ## custom_body_preview: float = 4.0
 
 
 class Tag(SQLModel, table=True):  # 4
@@ -52,7 +52,7 @@ class Task(SQLModel, table=True):  # 3
         sa_relationship_kwargs={"remote_side": "Task.id"} )
 
     snippet_id: Optional[int] = Field(default=None, foreign_key="snippet.id")
-    snippet: Optional[Snippet] = Relationship(back_populates="tasks")
+    snippet: Optional["Snippet"] = Relationship(back_populates="tasks")
     assignee_id: Optional[int] = Field(default=None, foreign_key="user.id")
     assignee: Optional[User] = Relationship(back_populates="assigned_tasks")
 
@@ -65,9 +65,9 @@ class Snippet(SQLModel, table=True):  # 1
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
     created_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    created_by: Optional[User] = Relationship(back_populates="snippets_created")
-    # created_by: Optional[User] = Relationship(
-    #     sa_relationship_kwargs={"primaryjoin": "Snippet.created_by_id==User.id", "lazy": "joined"} )
+    # created_by: Optional[User] = Relationship(back_populates="snippets_created")
+    created_by: Optional[User] = Relationship(
+        sa_relationship_kwargs={"primaryjoin": "Snippet.created_by_id==User.id", "lazy": "joined"} )
     
     updated_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
     updated_by: Optional[User] = Relationship(
