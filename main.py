@@ -172,14 +172,29 @@ async def ping():
     return {"status": "pong", "version": VERSION, "db": "connected"}
 
 
-@app.get("/seed/{pass_code}")
-async def seed():
-    from seed import seed_database
-    if pass_code == 'l33tr':
+from seed import seed_database
+
+@app.get("/admin/seed")
+async def trigger_seed(key: str = None, current_user: Optional[User] = Depends(get_current_user)):
+    # 1. Proteção básica: Só Bruno pode triggar ou precisa de uma KEY na URL
+    # Ex: /admin/seed?key=vibe123
+    if key != "l33tr":
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+    try:
         seed_database()
-        return {"status": "success on seeding db"}
-    else:
-        return {"status": "error on seeding db"}
+        return {"status": "success", "message": "Database seeded successfully"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+# @app.get("/seed/{pass_code}")
+# async def seed():
+#     from seed import seed_database
+#     if pass_code == 'l33tr':
+#         seed_database()
+#         return {"status": "success on seeding db"}
+#     else:
+#         return {"status": "error on seeding db"}
 
 
 """ versão antiga
