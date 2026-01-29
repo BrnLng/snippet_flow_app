@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 from typing import Optional
 from sqlmodel import SQLModel, Session, create_engine, select, or_
 
-from app.models import User, Snippet, SnippetCollaboratorLink, SnippetHistory
+from app.models import User, Snippet, SnippetCollaboratorLink  #, SnippetHistory
 from app.services import SnippetSerializer
 
 
@@ -149,12 +149,13 @@ async def save_snippet(
         # History snapshot++
         full_text = SnippetSerializer.to_markdown(snippet)
         
-        history = SnippetHistory(
-            snippet_id=snippet.id,
-            full_markdown=full_text,
-            changed_by_id=current_user.id
-        )
-        session.add(history)
+        # TODO: history log
+        # history = SnippetHistory(
+        #     snippet_id=snippet.id,
+        #     full_markdown=full_text,
+        #     changed_by_id=current_user.id
+        # )
+        # session.add(history)
         session.commit()
         
         return templates.TemplateResponse(
