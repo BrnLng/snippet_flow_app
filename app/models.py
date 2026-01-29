@@ -51,10 +51,10 @@ class Task(SQLModel, table=True):  # 3
     #parent_task: Optional["Task"] = Relationship(back_populates="sub_tasks", 
     #    sa_relationship_kwargs={"remote_side": "Task.id"} )
 
-    snippet_id: Optional[int] = Field(default=None, foreign_key="snippet.id")
-    snippet: Optional["Snippet"] = Relationship(back_populates="tasks")
-    assignee_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    assignee: Optional[User] = Relationship()
+    #snippet_id: Optional[int] = Field(default=None, foreign_key="snippet.id")
+    #snippet: Optional["Snippet"] = Relationship(back_populates="tasks")
+    #assignee_id: Optional[int] = Field(default=None, foreign_key="user.id")
+    #assignee: Optional[User] = Relationship()
     #assignee: Optional[User] = Relationship(back_populates="assigned_tasks")
 
 
@@ -68,20 +68,20 @@ class Snippet(SQLModel, table=True):  # 1
 
     created_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
     # created_by: Optional[User] = Relationship(back_populates="snippets_created")
-    created_by: Optional[User] = Relationship(
-        sa_relationship_kwargs={"primaryjoin": "Snippet.created_by_id==User.id", "lazy": "joined"} )
+    #created_by: Optional[User] = Relationship(
+    #    sa_relationship_kwargs={"primaryjoin": "Snippet.created_by_id==User.id", "lazy": "joined"} )
     
     updated_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    updated_by: Optional[User] = Relationship(
-        sa_relationship_kwargs={"primaryjoin": "Snippet.updated_by_id==User.id"} )
+    #updated_by: Optional[User] = Relationship(
+    #    sa_relationship_kwargs={"primaryjoin": "Snippet.updated_by_id==User.id"} )
 
-    tasks: List[Task] = Relationship(back_populates="snippet", 
-        sa_relationship_kwargs={"cascade": "all, delete-orphan"} )
-    tags: List[Tag] = Relationship(link_model=SnippetTagLink)
-    collaborators: List[User] = Relationship(link_model=SnippetCollaboratorLink)
+    #tasks: List[Task] = Relationship(back_populates="snippet", 
+    #    sa_relationship_kwargs={"cascade": "all, delete-orphan"} )
+    #tags: List[Tag] = Relationship(link_model=SnippetTagLink)
+    #collaborators: List[User] = Relationship(link_model=SnippetCollaboratorLink)
     #tags: List[Tag] = Relationship(back_populates="snippets", link_model=SnippetTagLink)
     #collaborators: List[User] = Relationship(back_populates="collaborations", link_model=SnippetCollaboratorLink)
-    history: List["SnippetHistory"] = Relationship(back_populates="snippet")
+    #history: List["SnippetHistory"] = Relationship(back_populates="snippet")
 
 
 class SnippetHistory(SQLModel, table=True):  # 5
