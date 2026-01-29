@@ -11,7 +11,7 @@ from app.models import User, Snippet, SnippetCollaboratorLink, SnippetHistory
 from app.services import SnippetSerializer
 
 
-VERSION = "0.131"
+VERSION = "0.132"
 
 
 DATABASE_FILE = "sqlite:///app_data.db"
@@ -172,20 +172,24 @@ async def ping():
     return {"status": "pong", "version": VERSION, "db": "connected"}
 
 
-from seed import seed_database
 
 @app.get("/admin/seed")
 async def trigger_seed(key: str = None, current_user: Optional[User] = Depends(get_current_user)):
-    # 1. Proteção básica: Só Bruno pode triggar ou precisa de uma KEY na URL
+    # 1. Proteção básica: Só User.Bruno/admin pode usar ou precisa de uma KEY na URL
     # Ex: /admin/seed?key=vibe123
     if key != "l33tr":
         raise HTTPException(status_code=403, detail="Forbidden")
 
+    import traceback
+    from seed import seed_database
+
     try:
+
         seed_database()
         return {"status": "success", "message": "Database seeded successfully"}
     except Exception as e:
-        return {"status": "error", "message": str(e)}
+        error_trace = traceback.format_exc()
+        return {"status": "error", "message": str(e), "traceback": error_trace}
 
 # @app.get("/seed/{pass_code}")
 # async def seed():
