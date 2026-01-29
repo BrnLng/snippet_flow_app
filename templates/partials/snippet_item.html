@@ -8,16 +8,16 @@
             <h3 class="snippet-title">
                 {{ snippet.title }}
                 
-                {% if snippet.created_by_id != user_id %}
+                {# TODO: % if snippet.created_by_id != user_id %}
                     <span class="badge badge-collab" title="Criado por {{ snippet.created_by.username }}">
                         Shared
                     </span>
-                {% endif %}
+                {% endif % #}
             </h3>
         </div>
 
         <div class="meta-row">
-            <span class="timestamp">Atualizado em {{ snippet.updated_at.strftime('%d/%m %H:%M') }}</span>
+            {# <span class="timestamp">Atualizado em {{ snippet.updated_at.strftime('%d/%m %H:%M') }}</span> #}
             
             {% if snippet.tags %}
                 <div class="tags-list">
@@ -37,7 +37,7 @@
             {{ snippet.body }}
         </div>
 
-        {% if snippet.tasks %}
+        {# % if snippet.tasks %}
             <div class="tasks-section">
                 <h4>Tarefas</h4>
                 <ul class="task-list">
@@ -59,7 +59,7 @@
                 {% endfor %}
                 </ul>
             </div>
-        {% endif %}
+        {% endif % #}
 
         <div class="snippet-actions">
             <button class="btn-ghost" 
