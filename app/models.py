@@ -38,7 +38,7 @@ class Tag(SQLModel, table=True):  # 4
     name: str = Field(index=True)
     value: Optional[str] = None
     is_number: Optional[bool] = False
-    snippets: List["Snippet"] = Relationship(back_populates="tags", link_model=SnippetTagLink)
+    # snippets: List["Snippet"] = Relationship(back_populates="tags", link_model=SnippetTagLink)
 
 
 class Task(SQLModel, table=True):  # 3
