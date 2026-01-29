@@ -84,48 +84,15 @@ class Snippet(SQLModel, table=True):  # 1
     #history: List["SnippetHistory"] = Relationship(back_populates="snippet")
 
 
-class SnippetHistory(SQLModel, table=True):  # 5
-    """
-    Full (with all metadata) Snippet Markdown Version.
-    Immutable. Each new different save is kept here.
-    """
-    id: Optional[int] = Field(default=None, primary_key=True)
-    full_markdown: str = Field(sa_type=Text)  # full_markdown: str = Field(sa_column_kwargs={"type_": Text})
-    diff_summary: Optional[str] = None  # Optional: "+2 lines, 1 task done"
-    captured_at: datetime = Field(default_factory=datetime.utcnow)
-    changed_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    snippet_id: int = Field(foreign_key="snippet.id")
-    snippet: Snippet = Relationship(back_populates="history")
-
-
-
-
-""" # ::: ref old ::: #
-
-from pydantic import BaseModel, Field
-from typing import List, Optional
-from datetime import datetime
-import json # Para lidar com JSON em SQLite
-
-
-class Task(BaseModel):
-    id: str
-    text: str
-    completed: bool = False
-
-class Collaborator(BaseModel):
-    id: str
-    name: str
-    avatarUrl: Optional[str] = None # Opcional, para simplificar
-
-class Snippet(BaseModel):
-    id: Optional[str] = None # auto ID
-    title: str
-    body: str
-    authorId: str
-    createdAt: Optional[datetime] = None # Definido no backend
-    updatedAt: Optional[datetime] = None # Definido no backend
-    tags: List[str] = Field(default_factory=list) # Padrão para lista vazia
-    collaborators: List[Collaborator] = Field(default_factory=list)
-    tasks: List[Task] = Field(default_factory=list)
-"""
+# class SnippetHistory(SQLModel, table=True):  # 5
+#     """
+#     Full (with all metadata) Snippet Markdown Version.
+#     Immutable. Each new different save is kept here.
+#     """
+#     id: Optional[int] = Field(default=None, primary_key=True)
+#     full_markdown: str = Field(sa_type=Text)  # full_markdown: str = Field(sa_column_kwargs={"type_": Text})
+#     diff_summary: Optional[str] = None  # Optional: "+2 lines, 1 task done"
+#     captured_at: datetime = Field(default_factory=datetime.utcnow)
+#     changed_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
+#     snippet_id: int = Field(foreign_key="snippet.id")
+#     snippet: Snippet = Relationship(back_populates="history")
