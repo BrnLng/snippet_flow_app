@@ -83,7 +83,7 @@ class SnippetHistory(SQLModel, table=True):  # 5
     Immutable. Each new different save is kept here.
     """
     id: Optional[int] = Field(default=None, primary_key=True)
-    full_markdown: str = Field(sa_column_kwargs={"type_": Text})
+    full_markdown: str = Field(sa_type=Text)  # full_markdown: str = Field(sa_column_kwargs={"type_": Text})
     diff_summary: Optional[str] = None  # Optional: "+2 lines, 1 task done"
     captured_at: datetime = Field(default_factory=datetime.utcnow)
     changed_by_id: Optional[int] = Field(default=None, foreign_key="user.id")
