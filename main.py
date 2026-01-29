@@ -11,7 +11,7 @@ from app.models import User, Snippet, SnippetCollaboratorLink  #, SnippetHistory
 from app.services import SnippetSerializer
 
 
-VERSION = "0.136"
+VERSION = "0.137"
 
 
 DATABASE_FILE = "sqlite:///app_data.db"
@@ -91,7 +91,7 @@ async def process_logout(request: Request):
 
 @app.get("/dashboard", response_class=HTMLResponse)  # GET
 async def dashboard_page(request: Request, current_user: Optional[User] = Depends(get_current_user)):
-    if (not current_user) or (request["detail"] == "Não autenticado"):
+    if (not current_user):  # TODO: if needed -- or (request["detail"] == "Não autenticado"):
         return RedirectResponse(url="/login", status_code=status.HTTP_302_FOUND)
 
     with Session(engine) as session:
