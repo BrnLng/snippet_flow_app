@@ -11,7 +11,7 @@ from app.models import User, Snippet, SnippetCollaboratorLink, SnippetHistory
 from app.services import SnippetSerializer
 
 
-VERSION = "0.1"
+VERSION = "0.12"
 
 
 DATABASE_FILE = "sqlite:///app_data.db"
@@ -64,7 +64,7 @@ async def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request, "message": None})
 
 
-@app.post("/login", response_class=HTMLResponse)  # POST
+@app.post("/login", response_class=HTMLResponse)  # POST -- sent form
 async def process_login(request: Request, username: str = Form(...), password: str = Form(...)):
     with Session(engine) as session:
         statement = select(User).where(User.username == username)
@@ -74,7 +74,7 @@ async def process_login(request: Request, username: str = Form(...), password: s
             return templates.TemplateResponse(
                 "login.html",
                 {"request": request, "message": "Usuário ou senha inválidos."},
-                status_code=status.HTTP_401_UNAUTHORIZED
+                status_code=status.HTTP_401_UNAUTHORIZED,
             )
         # Login Success: Define simple cookie with username while in dev  TODO: proper cookies
         response = RedirectResponse(url="/dashboard", status_code=status.HTTP_302_FOUND)
