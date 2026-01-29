@@ -92,7 +92,7 @@ def seed_database():
         
         # Tags no Snip3
         link_tag3 = SnippetTagLink(snippet_id=snip3.id, tag_id=tag_urgent.id)
-        session.add_all([link_tag3, link_tag4])
+        session.add_all([link_tag3]) #, link_tag4])
 
         # ---------------------------------------------------------
         # 4. FINALIZAR
