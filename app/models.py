@@ -54,13 +54,15 @@ class Task(SQLModel, table=True):  # 3
     snippet_id: Optional[int] = Field(default=None, foreign_key="snippet.id")
     snippet: Optional["Snippet"] = Relationship(back_populates="tasks")
     assignee_id: Optional[int] = Field(default=None, foreign_key="user.id")
-    assignee: Optional[User] = Relationship(back_populates="assigned_tasks")
+    assignee: Optional[User] = Relationship()
+    #assignee: Optional[User] = Relationship(back_populates="assigned_tasks")
 
 
 class Snippet(SQLModel, table=True):  # 1
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str
     body: str
+
     created_at: datetime = Field(default_factory=datetime.utcnow)
     updated_at: datetime = Field(default_factory=datetime.utcnow)
 
@@ -75,8 +77,10 @@ class Snippet(SQLModel, table=True):  # 1
 
     tasks: List[Task] = Relationship(back_populates="snippet", 
         sa_relationship_kwargs={"cascade": "all, delete-orphan"} )
-    tags: List[Tag] = Relationship(back_populates="snippets", link_model=SnippetTagLink)
-    collaborators: List[User] = Relationship(back_populates="collaborations", link_model=SnippetCollaboratorLink)
+    tags: List[Tag] = Relationship(link_model=SnippetTagLink)
+    collaborators: List[User] = Relationship(link_model=SnippetCollaboratorLink)
+    #tags: List[Tag] = Relationship(back_populates="snippets", link_model=SnippetTagLink)
+    #collaborators: List[User] = Relationship(back_populates="collaborations", link_model=SnippetCollaboratorLink)
     history: List["SnippetHistory"] = Relationship(back_populates="snippet")
 
 
