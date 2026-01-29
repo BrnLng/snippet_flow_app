@@ -47,9 +47,9 @@ class Task(SQLModel, table=True):  # 3
     is_done: bool = False
 
     parent_id: Optional[int] = Field(default=None, foreign_key="task.id")  # for sub-tasks recursiveness
-    sub_tasks: List["Task"] = Relationship(back_populates="parent_task")
-    parent_task: Optional["Task"] = Relationship(back_populates="sub_tasks", 
-        sa_relationship_kwargs={"remote_side": "Task.id"} )
+    #sub_tasks: List["Task"] = Relationship(back_populates="parent_task")
+    #parent_task: Optional["Task"] = Relationship(back_populates="sub_tasks", 
+    #    sa_relationship_kwargs={"remote_side": "Task.id"} )
 
     snippet_id: Optional[int] = Field(default=None, foreign_key="snippet.id")
     snippet: Optional["Snippet"] = Relationship(back_populates="tasks")
