@@ -28,7 +28,7 @@ class User(SQLModel, table=True):  # 2
 
     # assigned_tasks: List["Task"] = Relationship(back_populates="assignee")
     # collaborations: List["Snippet"] = Relationship(back_populates="collaborators", 
-        link_model=SnippetCollaboratorLink)
+    #    link_model=SnippetCollaboratorLink)
     ## TODO: maybe add:: custom_date_stamp: str = r'%d/%m/%Y'  # // '%Y-%m-%d' etc
     ## custom_body_preview: float = 4.0
 
