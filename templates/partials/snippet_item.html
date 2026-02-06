@@ -1,77 +1,86 @@
-<article class="snippet-item card" id="snippet-{{ snippet.id }}">
-    
-    <div class="snippet-header" 
-         _="on click toggle .expanded on #snippet-{{ snippet.id }} then toggle .hidden on #body-{{ snippet.id }}">
-        
-        <div class="title-row">
-            <span class="toggle-icon">▶</span>
-            <h3 class="snippet-title">
-                {{ snippet.title }}
-                
-                {# TODO: % if snippet.created_by_id != user_id %}
-                    <span class="badge badge-collab" title="Criado por {{ snippet.created_by.username }}">
-                        Shared
-                    </span>
-                {% endif % #}
-            </h3>
-        </div>
+<div id="dashboard">
 
-        <div class="meta-row">
-            {# <span class="timestamp">Atualizado em {{ snippet.updated_at.strftime('%d/%m %H:%M') }}</span> #}
-            
-            {% if snippet.tags %}
-                <div class="tags-list">
-                {% for tag in snippet.tags %}
-                    <span class="tag pill" title="{{ tag.value }}">
-                        {{ tag.name }}
-                    </span>
-                {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-    </div>
+    <div class="snippet" id="s{{ snippet.id }}">
+      <div class="flow">
 
-    <div id="body-{{ snippet.id }}" class="snippet-body hidden">
-        
-        <div class="text-content">
+        <div class="main-content" _="install toggle_text">
+          <header class="snippet-header">
+            <span class="fold-icon rotated">&#x25BC;</span>
+            <h2>{{ snippet.title }}</h2>
+          </header>
+
+          <article class="body-text truncated">
             {{ snippet.body }}
+          </article>
         </div>
 
-        {# % if snippet.tasks %}
-            <div class="tasks-section">
-                <h4>Tarefas</h4>
-                <ul class="task-list">
-                {% for task in snippet.tasks %}
-                    {% if not task.parent_id %}
-                    <li class="task-item {% if task.is_done %}done{% endif %}">
-                        <input type="checkbox" 
-                               {% if task.is_done %}checked{% endif %}
-                               hx-post="/tasks/{{ task.id }}/toggle"
-                               hx-swap="none"> <span class="task-text">{{ task.text }}</span>
-                        
-                        {% if task.assignee %}
-                            <span class="assignee-avatar" title="Responsável: {{ task.assignee.username }}">
-                                {{ task.assignee.username[:1]|upper }}
-                            </span>
-                        {% endif %}
-                    </li>
-                    {% endif %}
-                {% endfor %}
-                </ul>
+        <aside class="sidebar">
+
+          <div class="scroller">
+            <div class="meta-group lineable">
+              <h4>Atividade</h4>
+              <div class="authors">
+                — <span>{{ snippet.created_by.username }}</span>
+                <!--, <span>+B</span>, <span>+C</span>, <span>+D</span>-->
+              </div>
+              <div class="timestamp">Atualizado <strong>{{ snippet.updated_at.strftime('%d/%m %H:%M') }}</strong></div>
             </div>
-        {% endif % #}
 
-        <div class="snippet-actions">
-            <button class="btn-ghost" 
-                    hx-get="/snippets/{{ snippet.id }}/edit-form" 
+            {% if snippet.tags %}
+            <div class="meta-group">
+              <h4>Tags</h4>
+              <div class="tags-container">
+                {% for tag in snippet.tags %}
+                <span class="tag{#% if urgente ... %}">#{{ tag.name }}</span>{#TODO: { tag.value }}
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+
+            {# % if snippet.tasks %}
+            <div class="meta-group">
+              <h4>Tasks (1/3)</h4>
+              <ul class="mini-tasks">
+              {% for task in snippet.tasks %}
+                {% if not task.parent_id %}
+                <li{% if task.is_done %} class="task-done"{% endif %}>
+                    <input type="checkbox"{% if task.is_done %} checked{% endif %} 
+                        hx-post="/tasks/{{ task.id }}/toggle"
+                        hx-swap="none"><!-- TODO: &#x23F0;/&#x1F4C5; --> {{ task.text }}
+                    {% if task.assignee %}
+                        <span class="assignee-avatar" title="Responsável: {{ task.assignee.username }}">
+                            {{ task.assignee.username[:1]|upper }}
+                        </span>
+                    {% endif %}
+                </li>
+                {% endif %}
+              {% endfor %}
+              </ul>
+            </div>
+            {% endif % #}
+
+            <div class="meta-group">
+              <h4>Attachments</h4>
+              <ul class="mini-tasks">
+                <li><input type="checkbox">Img01</li>
+                <li><input type="checkbox">Img02</li>
+                <li><input type="checkbox">Img03</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn-sm" hx-get="/snippets/{{ snippet.id }}/edit-form" 
                     hx-target="#snippet-{{ snippet.id }}" 
-                    hx-swap="outerHTML">
-                Editar
-            </button>
-            
-            <button class="btn-ghost text-xs" title="Ver histórico Markdown">
-                Ver Raw (MD)
-            </button>
-        </div>
+                    hx-swap="outerHTML">✎ Editar</button>
+            <button class="btn-sm" style="display: none;">Cancelar</button>
+            <button class="btn-sm" style="display: none;">Salvar</button>
+            <button class="btn-sm">&#10140; Administrar</button>
+            <button class="btn-sm" style="display: none;">&#10140; Ver Avançado/RAW</button>
+            <button class="btn-sm">&#10226; Versões</button>
+          </div>
+
+        </aside>
+
+      </div>
     </div>
-</article>

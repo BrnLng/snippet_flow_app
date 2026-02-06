@@ -1,53 +1,39 @@
 {% extends "base-main.html" %}
 {% block title %}Dashboard{% endblock %}
+{% block extra_script %}
+<script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
+<script type="text/hyperscript">
+  -- behavior + install worked better than func def
+  behavior toggle_text
+    on click
+      if target match .btn-sm or target match input exit end
+      toggle .truncated on .body-text in me
+      toggle .rotated on .fold-icon in me
+    end
+  end
+</script>
+{% endblock %}
 {% block content %}
-<div class="dashboard-container">
-    <header class="dashboard-header">
-        <div class="user-welcome">
-            <h1>Olá, {{ username|capitalize }}</h1>
-            <span class="user-role">ID: #{{ user_id }}</span>
-        </div>
-        
-        <form hx-post="/logout" hx-trigger="click" hx-target="body">
-            <button type="submit" class="btn-logout" title="Sair">
-                <i class="icon-logout"></i> Sair
-            </button>
-        </form>
-    </header>
+  <div id="dashboard">
 
-    <div class="toolbar">
-        <div class="search-box">
-            <input type="text" placeholder="Buscar snippets..." 
-                   hx-get="/dashboard/search" 
-                   hx-trigger="keyup changed delay:500ms" 
-                   hx-target="#snippet-flow">
-        </div>
-        <button class="btn-primary" _="on click toggle .hidden on #new-snippet-form">
-            + Novo Snippet
-        </button>
-    </div>
-
-    <div id="new-snippet-form" class="hidden snippet-creator-panel">
-        <form hx-post="/snippets/new" hx-target="#snippet-flow" hx-swap="afterbegin" _="on htmx:afterRequest reset() me">
-            <input type="text" name="title" placeholder="Título do Snippet" required>
-            <textarea name="body" placeholder="Escreva algo..." rows="3"></textarea>
-            <div class="form-actions">
-                <button type="button" _="on click add .hidden to #new-snippet-form">Cancelar</button>
-                <button type="submit" class="btn-save">Criar</button>
-            </div>
-        </form>
-    </div>
-    
-    <div id="snippet-flow" class="flow-container">
-        {% for snippet in snippets %}
+    {% for snippet in snippets %}
         {% include "partials/snippet_item.html" %}
-        <hr class="snippet_separator">
-        {% else %}
-        <div class="empty-state">
+    {% else %}
+        <div style="text-align: center; padding: 2rem; color: var(--text-color-muted);">
             <p>Nenhum snippet encontrado.</p>
-            <p>Comece criando um novo acima ou aguarde sincronização.</p>
+            <button class="btn-sm" hx-get="/snippets/new-form">+ Criar o Primeiro</button>
         </div>
-        {% endfor %}
-    </div>
-</div>
+    {% endfor %}
+
+  </div>
+    <div id="top-bar">
+    <input type="text" id="searchbar" placeholder="🔍 Busca...">
+    <button><strong>+</strong> Novo</button>
+    <button>&#x25BC; Painel</button>
+    <button class="theme-toggle" _="on click toggle @data-theme='dark' on <body/>">&#9728;/&#9790; Tema</button>
+  </div>
+    <div id="bottom-bar">
+    <button href="/redoc//doc">&lt;&lt; endpoints</button>
+    <button>Sair</button>
+  </div>
 {% endblock %}

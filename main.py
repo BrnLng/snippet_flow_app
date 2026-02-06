@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Form, Depends, HTTPException, status
+from fastapi import FastAPI, Request, Form, Depends, HTTPException, status, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -11,7 +11,7 @@ from app.models import User, Snippet, SnippetCollaboratorLink  #, SnippetHistory
 from app.services import SnippetSerializer
 
 
-VERSION = "0.137"
+VERSION = "0.138"
 
 
 DATABASE_FILE = "sqlite:///app_data.db"
@@ -77,7 +77,9 @@ async def process_login(request: Request, username: str = Form(...), password: s
                 status_code=status.HTTP_401_UNAUTHORIZED,
             )
         # Login Success: Define simple cookie with username while in dev  TODO: proper cookies
-        response = RedirectResponse(url="/dashboard", status_code=status.HTTP_302_FOUND)
+        response = Response(status_code=200)
+        response.headers["HX-Redirect"] = "/dashboard"
+        #response = RedirectResponse(url="/dashboard", status_code=status.HTTP_302_FOUND)
         response.set_cookie(key="session_user", value=user.username, httponly=True)
         return response
 
